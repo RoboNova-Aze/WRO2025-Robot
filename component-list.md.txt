@@ -1,0 +1,55 @@
+Components List and Description
+This section describes all the hardware components that we used in the WRO 2025 Future Engineers Robot project, including their specifications and purpose.
+
+1. Raspberry Pi 5 (4 GB RAM)
+The Raspberry Pi 5 is the main controller of the robot.
+It is a single-board computer with 4 GB RAM, capable of running a full operating system which is Raspberry Pi OS and controlling sensors, motors, and cameras.
+It also provides GPIO pins for hardware control and USB, HDMI, and networking ports for expansion.
+RaspberryPI-5-4gb
+
+2. Micro SD Card (4 GB)
+The micro SD card stores the operating system and all robot-related programs.
+For this project, a 4 GB card is used. It contains: Raspberry Pi OS, motor control code, and sensor processing scripts
+SD-Card-4gb
+
+
+3. Yellow DC Gear Motors
+These are TT DC Gear Motors  which we commonly call “yellow gear motors”.
+They are low-voltage motors with an integrated gearbox, providing higher torque at lower speeds which is ideal for our self-driving robot.
+Yellow-DC-Gear-Motors
+
+
+4. Wheels (Black)
+Paired with the yellow gear motors, the black plastic wheels provide traction and allow the robot to move smoothly on the competition surface.
+Black-Wheels
+
+5. L298N Motor Driver Module
+The L298N dual H-bridge motor driver controls the two yellow DC motors.
+It allows the Raspberry Pi to control motor's direction forward and backward. And also we can adjust motor speed by PWM signals.
+L298N-Motor-Driver
+
+6. LiPo Batteries (3 × 1S, 3.7V, 1500 mAh)
+Three 1S LiPo batteries are used to power the motors and electronics.
+Each battery has nominal voltage of 3.7 V and current of 1500 mAh. We connected them in series which will give us nominal voltage of 11.1 V and current of 1500 mAh. These are connected with a power distribution system to ensure stable voltage for protecting other components.
+LiPo-Battery
+
+7.LM2596 2A DC-DC Converter
+The DC-DC step-down converter regulates voltage from the LiPo batteries to the required level for the Raspberry Pi and servo motor.
+LM2596-Buck-Regulator
+
+
+8. Raspberry Pi Camera
+The Raspberry Pi Camera module provides real-time vision to the robot for object detection and detecting colours.
+Raspberry-PI-Camera
+
+9. MG90 Servo Motor
+The servo motor is used for precise rotational movement for 2 front wheels. It can rotate to a specific angle based on control signals from 0 degree to 180 degree.
+MG90-Servo-Motor
+
+10. IR Sensors (3 ×)
+Three Infrared (IR) sensors are used for line tracking and obstacle detection. They work by emitting infrared light and detecting reflections from surfaces which helps us to detect walls.
+IR Sensors
+
+11. Switch
+A physical power switch is included to turn the robot on or off safely, without unplugging wires.
+Switch
