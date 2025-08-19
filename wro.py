@@ -14,6 +14,8 @@ from enum import Enum
 from dataclasses import dataclass
 from typing import Tuple, Optional, List
 import logging
+from picamera2 import Picamera2
+from libcamera import controls
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -197,10 +199,11 @@ class MotorController:
         self.set_motor_speed(speed, speed - 20)
 
 class CameraModule:
-    """Camera and OpenCV processing for pillar detection"""
+    """Raspberry Pi Camera Module 2 and OpenCV processing for pillar detection"""
     
     def __init__(self):
-        self.camera = None
+        self.picam2 = None
+        self.camera_config = None
         self.setup_camera()
         
         # Color ranges for pillar detection (HSV)
@@ -217,24 +220,59 @@ class CameraModule:
         self.magenta_upper = np.array([170, 255, 255])
         
     def setup_camera(self):
-        """Initialize camera"""
+        """Initialize Raspberry Pi Camera Module 2"""
         try:
-            self.camera = cv2.VideoCapture(0)
-            self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-            self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-            self.camera.set(cv2.CAP_PROP_FPS, 30)
-            logger.info("Camera initialized")
+            self.picam2 = Picamera2()
+            
+            # Configure camera for optimal performance
+            self.camera_config = self.picam2.create_preview_configuration(
+                main={"format": 'XRGB8888', "size": (640, 480)},
+                controls={"FrameRate": 30}
+            )
+            
+            self.picam2.configure(self.camera_config)
+            
+            # Set camera controls for competition environment
+            self.picam2.set_controls({
+                "AeEnable": True,  # Auto exposure
+                "AwbEnable": True,  # Auto white balance
+                "AwbMode": controls.AwbModeEnum.Auto,
+                "ExposureTime": 10000,  # 10ms exposure (adjust for lighting)
+                "AnalogueGain": 1.0,
+                "Brightness": 0.0,
+                "Contrast": 1.0,
+                "Saturation": 1.0
+            })
+            
+            self.picam2.start()
+            
+            # Allow camera to warm up
+            time.sleep(2)
+            
+            logger.info("Raspberry Pi Camera Module 2 initialized")
+            
         except Exception as e:
-            logger.error(f"Camera initialization failed: {e}")
-            self.camera = None
+            logger.error(f"Pi Camera initialization failed: {e}")
+            self.picam2 = None
     
     def capture_frame(self) -> Optional[np.ndarray]:
-        """Capture a frame from camera"""
-        if self.camera is None:
+        """Capture a frame from Pi Camera"""
+        if self.picam2 is None:
             return None
         
-        ret, frame = self.camera.read()
-        return frame if ret else None
+        try:
+            # Capture frame as numpy array
+            frame = self.picam2.capture_array()
+            
+            # Convert from XRGB8888 to BGR for OpenCV
+            if frame.shape[2] == 4:  # XRGB format
+                frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2BGR)
+            
+            return frame
+            
+        except Exception as e:
+            logger.error(f"Frame capture failed: {e}")
+            return None
     
     def detect_pillars(self, frame: np.ndarray) -> List[PillarDetection]:
         """
