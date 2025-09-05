@@ -55,12 +55,25 @@ A comprehensive autonomous racing robot system built for the World Robot Olympia
 ## 📁 Project Structure
 
 ```
-autonomous-racing-robot/
-├── vision_pillars.py      # Camera-based pillar detection
-├── line_follower.py       # IR sensor line following
-├── config.yaml           # System configuration
-├── component-list.md      # Hardware documentation
-└── README.md             # This file
+WRO2025-Robot/
+├── README.md                 # Project documentation
+├── LICENSE                   # Project license
+├── .gitignore               # Git ignore rules
+├── 2025-WRO-Future-Engineers.txt  # Competition guidelines
+├── component-list.md.txt     # Hardware components documentation
+├── src/                     # Source code
+│   ├── vision_pillars.py    # Camera-based pillar detection
+│   ├── line_follower.py     # IR sensor line following system  
+│   ├── servo.py            # Servo motor control
+│   ├── config.yaml         # System configuration
+│   └── placeholder.txt     # Development notes
+├── circuit-diagram/         # Electronic schematics
+├── design-of-rc-car/       # Mechanical design files
+├── robot-photos/           # Robot assembly photos
+├── team-photos/            # Team member photos
+├── video/                  # Demonstration videos
+├── commit-log/             # Development history
+└── other/                  # Additional resources
 ```
 
 ## 🚀 Quick Start
