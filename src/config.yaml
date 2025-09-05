@@ -1,0 +1,96 @@
+# Autonomous Racing Robot Configuration
+# ====================================
+
+# IR Sensor Configuration
+ir_sensors:
+  left_pin: 18
+  center_pin: 23
+  right_pin: 24
+  threshold_low: 0.3
+  threshold_high: 0.7
+  sample_rate: 100  # Hz
+  moving_average_window: 5
+
+# Motor Control Configuration
+motors:
+  left_enable_pin: 12
+  left_dir_pin1: 16
+  left_dir_pin2: 20
+  right_enable_pin: 13
+  right_dir_pin1: 19
+  right_dir_pin2: 21
+  base_speed: 70
+  max_speed: 100
+  turn_speed: 50
+  correction_factor: 0.8
+
+# Navigation Configuration
+navigation:
+  lap_target: 3
+  encoder_counts_per_lap: 1000  # Adjust based on actual track measurements
+  turn_duration: 0.5
+  correction_duration: 0.2
+  watchdog_timeout: 5.0
+  repair_allowed: true
+
+# Camera Configuration
+camera:
+  width: 640
+  height: 480
+  fps: 30
+  awb_mode: "auto"
+  preview: false
+
+# Color Detection Configuration
+# Based on competition specifications:
+# Red pillar RGB: (238, 39, 55)
+# Green pillar RGB: (68, 214, 44)
+colors:
+  # Red pillar HSV ranges
+  red_lower: [0, 120, 120]
+  red_upper: [10, 255, 255]
+  red_lower2: [170, 120, 120]  # Handle HSV wrap-around
+  red_upper2: [180, 255, 255]
+  
+  # Green pillar HSV ranges
+  green_lower: [40, 120, 120]
+  green_upper: [80, 255, 255]
+
+# Detection Algorithm Configuration
+detection:
+  gaussian_kernel: 5
+  gaussian_sigma: 1.0
+  morph_kernel_size: 5
+  erosion_iterations: 1
+  dilation_iterations: 2
+  min_area: 100
+  max_area: 50000
+  min_aspect_ratio: 0.3
+  max_aspect_ratio: 3.0
+  min_solidity: 0.5
+  min_extent: 0.3
+  expected_pillar_ratio: 2.0
+  ratio_tolerance: 0.5
+
+# System Integration Configuration
+
+integration:
+  communication_mode: "zmq"
+  zmq_port: 5555
+  tcp_port: 8888
+  update_rate: 20
+
+# Track Specifications (for reference and optimization)
+# Mat size: 3200x3200mm, inner track: 3000x3000mm
+# Wall height: 100mm, black walls
+# Starting zone: 200x500mm
+# Pillar size: 50x50x100mm
+# Parking lot: width 200mm, length 1.5x robot length
+track_specs:
+  mat_size: [3200, 3200]  # mm
+  inner_track_size: [3000, 3000]  # mm
+  wall_height: 100  # mm
+  starting_zone: [200, 500]  # mm
+  pillar_size: [50, 50, 100]  # mm [width, depth, height]
+  parking_width: 200  # mm
+  parking_length_multiplier: 1.5  # x robot length
