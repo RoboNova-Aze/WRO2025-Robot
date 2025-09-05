@@ -32,7 +32,7 @@ A comprehensive autonomous racing robot system built for the World Robot Olympia
 
 ### Core Components
 - **Raspberry Pi 5** (4GB RAM) - Main controller
-- **Micro SD Card** (4GB) - OS and program storage
+- **Micro SD Card** (64GB) - OS and program storage
 - **Raspberry Pi Camera** - Real-time vision system
 
 ### Motors & Control
