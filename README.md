@@ -39,7 +39,7 @@ A comprehensive autonomous racing robot system built for the World Robot Olympia
 - **2× Yellow TT DC Gear Motors** - Differential drive
 - **Black plastic wheels** - Traction and movement
 - **L298N Motor Driver** - Motor control interface
-- **MG90 Servo Motor** - Precise steering control
+- **MG90 Servo Motor** - Precise front-wheel steering control
 
 ### Power System
 - **3× LiPo Batteries** (1S, 3.7V, 1500mAh) - Connected in series (11.1V)
@@ -64,7 +64,8 @@ WRO2025-Robot/
 ├── src/                     # Source code
 │   ├── vision_pillars.py    # Camera-based pillar detection
 │   ├── line_follower.py     # IR sensor line following system  
-│   ├── servo.py            # Servo motor control
+│   ├── servo.py            # Servo motor control and steering
+│   ├── mainservo.py        # Main servo integration example
 │   ├── config.yaml         # System configuration
 │   └── placeholder.txt     # Development notes
 ├── circuit-diagram/         # Electronic schematics
@@ -101,7 +102,10 @@ Motors (L298N):
 - Right Dir 1: GPIO 19
 - Right Dir 2: GPIO 21
 
-Servo: GPIO 2 (default PWM)
+Servo Motor:
+- Control Pin: GPIO 2 (PWM)
+- Power: 5V from Raspberry Pi
+- Ground: Common ground
 ```
 
 ### 2. Software Installation
@@ -125,13 +129,32 @@ pip3 install picamera2 numpy opencv-python pyyaml pyzmq RPi.GPIO
 Edit `config.yaml` to match your hardware setup:
 
 ```yaml
-# Adjust GPIO pins if different
+# Servo configuration
+servo:
+  pin: 2                    # GPIO pin for servo control
+  freq_hz: 50              # PWM frequency (standard servo)
+  center_us: 1500          # Center position pulse width
+  min_us: 600              # Minimum pulse width
+  max_us: 2400             # Maximum pulse width
+  deg_min: -50.0           # Minimum angle (left)
+  deg_max: 50.0            # Maximum angle (right)
+  slew_deg_per_s: 400.0    # Maximum turn rate
+  failsafe_ms: 300         # Safety timeout
+
+# Turning limits
+turning:
+  sharp_left: -25.0        # Default left turn angle
+  sharp_right: 25.0        # Default right turn angle
+  max_left: -50.0          # Maximum left angle
+  max_right: 50.0          # Maximum right angle
+
+# IR sensor pins
 ir_sensors:
   left_pin: 18
   center_pin: 23
   right_pin: 24
 
-# Calibrate motor speeds
+# Motor control
 motors:
   base_speed: 70
   max_speed: 100
@@ -154,7 +177,28 @@ python3 vision_pillars.py
 # Test pillar detection in preview mode
 ```
 
+**Servo Calibration:**
+```bash
+python3 servo.py
+# Test servo movement and verify steering directions
+# Adjust center_us value if needed for straight alignment
+```
+
 ## 🎮 Running the Robot
+
+### Servo Control Test
+```bash
+python3 servo.py
+# Tests servo sweep from -50° to +50°
+# Verifies steering linkage and direction
+```
+
+### Main Servo Integration
+```bash
+python3 mainservo.py
+# Example of servo integration with perception systems
+# Shows proper initialization and control loop
+```
 
 ### Line Following Only (Open Challenge)
 ```bash
@@ -172,12 +216,69 @@ python3 vision_pillars.py
 
 ### Integrated System
 ```bash
-# Run both systems simultaneously
-python3 line_follower.py &
-python3 vision_pillars.py
+# Run complete autonomous system
+python3 mainservo.py
+# Integrates vision, line following, and steering
 ```
 
 ## 🔧 System Architecture
+
+### Servo Control System (`servo.py`)
+
+**Features:**
+- **PWM-based Control**: 50Hz PWM signal generation for standard servos
+- **Angle Interface**: Direct degree-based control (-50° to +50°)
+- **Slew Rate Limiting**: Prevents jerky movements (400°/sec default)
+- **Failsafe Protection**: Stops servo if control loop stalls
+- **Configuration-driven**: All parameters loaded from config.yaml
+
+**Servo Control Pipeline:**
+1. Angle command received in degrees
+2. Slew rate limiting applied for smooth motion
+3. Angle converted to PWM pulse width (600-2400μs)
+4. PWM duty cycle calculated and applied
+5. Watchdog monitors for control loop health
+
+**Steering Commands:**
+- **Negative angles**: Left steering (e.g., -25° = left turn)
+- **Positive angles**: Right steering (e.g., +25° = right turn)
+- **Zero degrees**: Straight ahead (center position)
+
+### Turning Limiter (`TurningLimiter` class)
+
+**Intelligent Turn Management:**
+- **Default Turns**: Uses ±25° for standard left/right commands
+- **Computed Angles**: If vision system computes >25°, uses computed value
+- **Safety Limits**: Never exceeds ±50° maximum steering angle
+- **Direction Enforcement**: Ensures turn direction matches command
+
+### Main Servo Integration (`mainservo.py`)
+
+**Usage Example:**
+```python
+from servo import make_servo_and_limiter
+
+# Initialize servo and turning limiter
+servo, limiter = make_servo_and_limiter()
+
+# Main control loop
+while running:
+    # Get perception data (vision, IR sensors, etc.)
+    angle, lTurn, rTurn = get_steering_command()
+    
+    # Apply turning limits and safety checks
+    angle_cmd = limiter.apply(angle, lTurn, rTurn)
+    
+    # Command servo and update
+    servo.set_deg(angle_cmd)
+    servo.tick()  # Call at 200-300 Hz
+    
+    time.sleep(0.005)  # ~200 Hz loop
+
+# Cleanup on exit
+servo.center()
+servo.close()
+```
 
 ### Vision System (`vision_pillars.py`)
 
@@ -225,6 +326,29 @@ python3 vision_pillars.py
 
 ## ⚙️ Configuration Reference
 
+### Servo Configuration
+```yaml
+servo:
+  pin: 2                    # GPIO pin (BCM numbering)
+  freq_hz: 50              # PWM frequency (Hz)
+  center_us: 1500          # Center pulse width (microseconds)
+  min_us: 600              # Minimum pulse width
+  max_us: 2400             # Maximum pulse width
+  deg_min: -50.0           # Minimum angle (degrees)
+  deg_max: 50.0            # Maximum angle (degrees)
+  slew_deg_per_s: 400.0    # Maximum turn rate (deg/sec)
+  failsafe_ms: 300         # Watchdog timeout (milliseconds)
+```
+
+### Turning Configuration
+```yaml
+turning:
+  sharp_left: -25.0        # Default left turn angle
+  sharp_right: 25.0        # Default right turn angle
+  max_left: -50.0          # Maximum left steering limit
+  max_right: 50.0          # Maximum right steering limit
+```
+
 ### Color Detection (HSV Ranges)
 ```yaml
 colors:
@@ -262,6 +386,32 @@ motors:
 ## 🛠️ Troubleshooting
 
 ### Common Issues
+
+**Servo not responding:**
+```bash
+# Check servo wiring
+# Power: 5V (red wire)
+# Ground: GND (brown/black wire)  
+# Signal: GPIO 2 (orange/yellow wire)
+
+# Test servo manually
+python3 servo.py
+```
+
+**Servo jittery or unstable:**
+- Check power supply stability (servo draws significant current)
+- Verify PWM frequency is 50Hz
+- Adjust slew rate in config.yaml
+- Ensure proper grounding
+
+**Steering direction reversed:**
+- Swap servo horn attachment 180°, or
+- Modify deg_min/deg_max values in config:
+```yaml
+servo:
+  deg_min: -50.0  # Change to 50.0
+  deg_max: 50.0   # Change to -50.0
+```
 
 **Camera not working:**
 ```bash
@@ -306,13 +456,28 @@ python3 line_follower.py
 # Choose option 6 for status display
 ```
 
+Test servo positions:
+```bash
+python3 -c "
+from servo import make_servo_and_limiter
+servo, _ = make_servo_and_limiter()
+servo.set_deg(-25)  # Test left turn
+input('Press Enter for right turn...')
+servo.set_deg(25)   # Test right turn
+input('Press Enter for center...')
+servo.center()
+servo.close()
+"
+```
+
 ## 🏆 Competition Strategy
 
 ### Pre-Competition Checklist
 - [ ] Calibrate IR sensors on actual track surface
 - [ ] Test camera detection under competition lighting
-- [ ] Verify motor speeds for track surface
-- [ ] Test emergency stop functionality
+- [ ] Verify servo steering alignment and limits
+- [ ] Test motor speeds for track surface
+- [ ] Verify emergency stop functionality
 - [ ] Practice repair procedure
 - [ ] Check battery charge levels
 - [ ] Backup configuration files
@@ -320,14 +485,34 @@ python3 line_follower.py
 ### Competition Day Setup
 1. **Sensor Calibration**: Calibrate IR sensors on competition track
 2. **Vision Tuning**: Adjust HSV ranges for competition lighting  
-3. **Speed Optimization**: Fine-tune motor speeds for track surface
-4. **Practice Runs**: Test both challenges before official attempts
+3. **Servo Alignment**: Center servo and verify straight-line tracking
+4. **Speed Optimization**: Fine-tune motor speeds for track surface
+5. **Practice Runs**: Test both challenges before official attempts
 
 ### Performance Optimization
 - Monitor battery voltage (performance drops below 10V)
 - Use practice time for sensor recalibration
 - Keep spare batteries charged and ready
 - Document successful configuration values
+- Test servo response under different battery levels
+
+## 🎯 Competition Rules Compliance
+
+### Steering System (Rule 11.3)
+- ✅ Single steering actuator (MG90 servo)
+- ✅ Front-wheel steering mechanism
+- ✅ No additional steering motors or mechanisms
+
+### Start Procedure (Rules 9.10-9.14)
+- ✅ Robot waits in stationary position
+- ✅ Single start button implementation available
+- ✅ No movement until start command
+- ✅ Servo centers automatically on startup
+
+### Communication Restrictions (Rules 11.6-11.12)
+- ✅ No wireless communication during run
+- ✅ All processing on-board Raspberry Pi
+- ✅ No external control signals
 
 ## 📚 Additional Resources
 
@@ -340,11 +525,11 @@ python3 line_follower.py
 - PyZMQ
 - RPi.GPIO
 
-### Competition Rules
-- Review official WRO 2025 Future Engineers rulebook
-- Understand penalty conditions
-- Practice within time limits
-- Prepare for technical inspection
+### Servo Control Theory
+- **PWM Period**: 20ms (50Hz frequency)
+- **Pulse Width Range**: 0.6ms to 2.4ms
+- **Center Position**: 1.5ms pulse width
+- **Angular Resolution**: ~0.1° with proper tuning
 
 ---
 
