@@ -536,4 +536,4 @@ servo.close()
 **Project Status**: Ready for WRO 2025 Competition  
 **Last Updated**: January 2025  
 **Python Version**: 3.7+  
-**Platform**: Raspberry Pi 5 with Raspberry Pi OS
+**Platform**: Raspberry Pi 4 with Raspberry Pi OS
