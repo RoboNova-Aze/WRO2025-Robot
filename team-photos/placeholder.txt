@@ -1,79 +1,47 @@
-# 🤖 RoboNova – WRO 2025 Future Engineers Robot
+👥 Team RoboNova – WRO 2025 Future Engineers
 
-This repository documents the circuit design and connections of RoboNova, our robot developed for the WRO 2025 Future Engineers category.  
-The system combines embedded control with the Arduino Nano, high-level computing with the Raspberry Pi, and a dual power supply system to achieve reliable and efficient operation.
+We are Team RoboNova, proudly representing Azerbaijan in the WRO 2025 Future Engineers category. Our team consists of two passionate young engineers, each bringing a unique set of skills and experiences to the project. Together, we combined software development, electronics expertise, and creative problem-solving to design and build an autonomous robot capable of meeting the challenges of this competition.
 
-1. System Overview
-RoboNova is designed as a four-wheel robot controlled by two DC gear motors and a steering servo.  
-The architecture follows a two-layer control structure:
+Nahid Mammadov – Software and Algorithms
 
-- The Arduino Nano manages low-level actuation (motors and servo) in real time.  
-- The Raspberry Pi executes high-level tasks such as vision and navigation, using a USB camera.  
+Nahid is the team member responsible for the software side of RoboNova. His main focus areas include:
 
-This separation ensures smooth interaction between real-time control and complex computations.
+Writing and testing the Arduino Nano code to ensure smooth motor and servo control.
 
-2. Power Distribution
-The robot employs two separate power sources for stability.
+Developing the Raspberry Pi software that handles computer vision, navigation, and high-level decision-making.
 
-1. Battery pack (7–12 V):  
-   - Connected to L298N VIN to drive the DC motors.  
-   - Connected to a DC–DC buck converter, stepped down to 5 V, which powers the Arduino Nano and the servo motor.  
+Creating the communication link between the Pi and the Arduino, ensuring that data and commands flow without delays.
 
-2. Powerbank (5 V USB):  
-   - Provides direct power to the Raspberry Pi and its connected USB camera.  
+Testing different control strategies so that the robot can adapt to changing conditions during the challenge.
 
-All grounds are connected together to maintain a common reference between controllers and peripherals.
+Nahid’s strength lies in his ability to transform competition requirements into working algorithms. He enjoys experimenting with ideas, finding practical solutions, and making the robot “think” and act like an autonomous vehicle.
 
-3. Motor Driver (L298N)
-The L298N dual H-bridge driver controls the two DC gear motors.
+Ulkar Rahimli – Electronics and Hardware
 
-- Motor A (left side): connected to OUT1 and OUT2.  
-- Motor B (right side): connected to OUT3 and OUT4.  
+Ulkar is the team member responsible for the electronics and hardware design of RoboNova. Her contributions include:
 
-Control signals from the Arduino Nano:  
-- ENA connected to pin D3 (PWM) for Motor A speed.  
-- IN1 and IN2 connected to pins D5 and D6 for Motor A direction.  
-- ENB connected to pin D9 (PWM) for Motor B speed.  
-- IN3 and IN4 connected to pins D7 and D8 for Motor B direction.  
+Designing and assembling the complete circuit layout of the robot, connecting the Arduino, Raspberry Pi, motors, servo, motor driver, and power systems.
 
-This configuration provides precise control of speed and direction for both motors, enabling forward, backward, and turning movements.
+Carefully managing the dual power supply (battery + powerbank) to keep the robot stable and efficient.
 
-4. Servo Motor
-The servo motor is controlled directly by the Arduino Nano.  
-The signal pin is connected to D10 (PWM), power comes from the buck converter (5 V), and ground is shared.  
-This allows accurate steering or mechanism positioning.
+Ensuring that the motors and servo are wired correctly and that all components share a common ground for reliable communication.
 
-5. Arduino Nano
-The Arduino Nano is powered from the buck converter at 5 V.  
-It generates PWM signals for motors and the servo.  
-It communicates with the Raspberry Pi via USB (serial link).  
-It ensures that actuation remains responsive even while the Pi handles intensive tasks.
+Testing different hardware setups and making adjustments to achieve the best performance.
 
-6. Raspberry Pi and Camera
-The Raspberry Pi is powered directly by the powerbank via USB.  
-It hosts the USB camera for vision processing.  
-It runs navigation and control algorithms.  
-It sends high-level commands to the Arduino Nano, which translates them into motor and servo actions.
+Ulkar’s strength is her attention to detail in wiring and hardware integration. Thanks to her work, the robot’s electronic system is robust, clean, and competition-ready.
 
-7. Pin Mapping Summary
-- Motor A: OUT1 and OUT2 connected to the left motor.  
-- Motor B: OUT3 and OUT4 connected to the right motor.  
-- ENA to D3 for PWM speed control of Motor A.  
-- IN1 to D5 and IN2 to D6 for Motor A direction.  
-- ENB to D9 for PWM speed control of Motor B.  
-- IN3 to D7 and IN4 to D8 for Motor B direction.  
-- Servo signal connected to D10.  
-- Servo powered from buck converter 5 V with shared ground.  
-- Arduino powered from buck converter 5 V.  
-- Raspberry Pi powered from powerbank 5 V.  
-- All components share a common ground.
+Collaboration and Teamwork
 
-8. Circuit Diagram
-The full schematic can be found in  
-circuit-diagram/circuit-diagram.png
+What makes RoboNova strong is the way we combine our skills.
 
-9. Team RoboNova
-- Nahid Mammadov – software and coding  
-- Ulkar Rahimli – electronics and wiring  
+Nahid focuses on the “brain” of the robot – the logic, code, and decision-making.
 
-Together, we designed RoboNova to combine robust hardware control with flexible software intelligence for the WRO 2025 competition.
+Ulkar focuses on the “body” of the robot – the wiring, power management, and physical connections.
+
+By working side by side, we ensure that the robot’s brain and body are always aligned. When software requires a new signal, Ulkar adjusts the hardware. When the hardware changes, Nahid adapts the code. This cycle of collaboration has been key to making RoboNova function smoothly.
+
+Vision and Spirit
+
+Our project is more than just a robot. It represents our team spirit, creativity, and determination. We believe that robotics should be both accessible and innovative. By using simple, affordable components such as Arduino, Raspberry Pi, and common DC motors, we show that high performance can be achieved without expensive equipment.
+
+As Team RoboNova, our vision is to demonstrate how young engineers from Azerbaijan can design, build, and present a robot that is not only functional but also inspiring. We want to prove that with teamwork, focus, and dedication, small teams can achieve big goals.
