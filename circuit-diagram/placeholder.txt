@@ -76,4 +76,4 @@ circuit-diagram/circuit-diagram.png
 - Nahid Mammadov – software and coding  
 - Ulkar Rahimli – electronics and wiring  
 
-Together, we designed RoboNova to combine robust hardware control with flexible software intelligence for the WRO 2025 competition.
+Together, we designed RoboNova to combine robust hardware control with flexible software intelligence for the WRO 2025 competition!
