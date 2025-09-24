@@ -1,1 +1,51 @@
-This is the commit-log folder. Add your files here.
+ 📜 RoboNova Commit Log
+
+This folder tells the story of how Team RoboNova built our WRO 2025 Future Engineers robot step by step.  
+Instead of just code commits, this log captures our progress, challenges, and key milestones.
+
+
+## Week 1 – Getting Started
+We set up the GitHub repository and created the first structure for our project.  
+At this stage, our focus was on understanding the requirements of the competition and deciding what hardware and software setup would suit us best.  
+We also tested the L298N motor driver with the Arduino Nano to make sure the motors could be controlled reliably.
+
+
+
+ Week 2 – Power Decisions
+We worked on the power system and agreed on a **dual supply setup**:  
+- Battery pack for motors, Arduino, and servo.  
+- Powerbank for Raspberry Pi.  
+This choice was made after experimenting and realising that separating power sources would make the Pi more stable.  
+We also connected the servo to the buck converter and confirmed that it worked smoothly.
+
+
+
+ Week 3 – First Motor Control
+This was an exciting week because we saw the robot’s wheels move for the first time.  
+We wrote the first Arduino sketches to control the motors with PWM.  
+The robot could already drive forward, backward, and turn in both directions.  
+We spent time adjusting the pin mapping so that movement matched our chassis setup.
+
+
+ Week 4 – Bringing in the Raspberry Pi
+We connected the Raspberry Pi with the USB camera and established serial communication with the Arduino.  
+This was a big step: now the Pi could “talk” to the Nano.  
+For the first time, we managed a complete cycle: camera input → Pi decision → Arduino command → motor movement.  
+This showed us that the two-layer control idea really works.
+
+
+ Week 5 – Circuit Documentation
+After testing, we drew and finalised our circuit schematic.  
+We carefully wrote down all connections, including pin mapping and power flow, so the design was clear and reproducible.  
+This week was about turning our working prototype into something that could be explained to others.
+
+
+ Week 6 – Telling Our Story
+We started writing documentation for the competition.  
+We added the **team introduction** (Nahid focusing on coding and algorithms, Ulkar on electronics and wiring) and created this commit log.  
+Our aim is to show juries not only the final robot, but also the journey of how we built it step by step.
+
+
+ Next Steps
+We will continue adding to this log as we improve our software, test vision algorithms, and fine-tune the robot for competition.  
+This way, anyone reading our repository can see the full development story of RoboNova.
