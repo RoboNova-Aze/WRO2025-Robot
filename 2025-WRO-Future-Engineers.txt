@@ -1,1 +1,91 @@
-First commit placeholder.
+WRO 2025 – Future Engineers
+Team RoboNova (Azerbaijan)
+
+1. Introduction
+Team RoboNova is participating in the WRO 2025 Future Engineers category with our project: an autonomous four-wheel robot.  
+The goal of this project is to design a mobile platform that can navigate, make decisions, and respond to its environment using a combination of electronics, mechanics, and software.
+
+Our robot is built with widely available, low-cost components such as Arduino, Raspberry Pi, and standard DC gear motors.  
+We focused on building a system that is not only functional but also modular, easy to expand, and stable under real competition conditions.
+
+2. Hardware Architecture
+The robot is constructed around the following core components:
+
+- Arduino Nano  
+  Used as the low-level controller, it generates PWM signals for motors and the servo.  
+  The Arduino ensures precise and real-time actuation of the robot’s movements.
+
+- Raspberry Pi (with USB camera)  
+  Acts as the high-level computing unit.  
+  It processes visual data from the camera, runs navigation algorithms, and sends commands to the Arduino.  
+  The Pi is dedicated to decision-making tasks, while the Arduino focuses on execution.
+
+- L298N Motor Driver  
+  Dual H-bridge driver that controls two yellow DC gear motors.  
+  Each side of the chassis is driven by one motor, giving the robot differential drive capability (forward, backward, turning).
+
+- Two Yellow DC Gear Motors (4 wheels)  
+  Provide the main locomotion of the robot.  
+  These motors are efficient and provide enough torque for stable movement.
+
+- Servo Motor  
+  Used for steering or controlling an additional mechanism.  
+  Controlled directly by the Arduino, it enables smooth directional adjustments.
+
+- Power System  
+  The robot uses a dual power approach:  
+  • A 7–12 V battery pack supplies the motors (through L298N) and powers the Arduino + servo (through a buck converter).  
+  • A 5 V USB powerbank powers the Raspberry Pi and camera.  
+  This separation ensures that the Pi is isolated from motor current spikes, keeping computations stable.
+
+3. Power Distribution Overview
+- Battery pack (7–12 V):  
+  • Directly powers the L298N VIN for motor control.  
+  • Feeds into a buck converter that steps down to 5 V, which powers the Arduino Nano and servo motor.  
+
+- Powerbank (5 V USB):  
+  • Directly powers the Raspberry Pi and camera via USB.  
+
+- Common Ground:  
+  • All components share a common ground to ensure proper communication between Arduino and Raspberry Pi.
+
+4. Software Architecture
+The robot follows a layered control system:
+
+- Arduino Nano Software:  
+  • Generates PWM signals to control motor speed and direction.  
+  • Controls the servo for steering.  
+  • Receives high-level commands from the Raspberry Pi over serial communication.  
+
+- Raspberry Pi Software:  
+  • Captures and processes camera images.  
+  • Runs navigation and decision-making algorithms.  
+  • Sends movement commands to Arduino (e.g., “go forward”, “turn left”).
+
+This division allows the robot to remain responsive (thanks to the Arduino) while also being intelligent (thanks to the Pi).
+
+5. Design Choices
+We designed the system with the following goals in mind:  
+- Stability – separating power supplies prevents the Raspberry Pi from resetting when motors draw high current.  
+- Modularity – the Arduino and Raspberry Pi are loosely coupled. Either unit can be modified or upgraded without affecting the other.  
+- Accessibility – all parts used are common and easy to replace, making the design reproducible for other teams or students.  
+- Expandability – additional sensors or modules can be added to the Arduino or Raspberry Pi with minimal changes.
+
+6. Team RoboNova
+- Nahid Mammadov – responsible for software development, coding, and computer vision system.  
+- Ulkar Rahimli – responsible for electronics, wiring, and hardware assembly.  
+
+We worked as a balanced team where one member focused on the “brain” (coding and logic) while the other focused on the “body” (electronics and wiring).  
+Together, this collaboration made it possible to build a complete working robot.
+
+7. Goals
+Our aim with RoboNova is to demonstrate how affordable components and clear design principles can be combined to create a powerful autonomous system.  
+Through this project we want to show:  
+- How separation of high-level and low-level control improves reliability.  
+- How modular electronics design can simplify debugging and upgrades.  
+- How robotics can be made accessible without expensive, specialised hardware.  
+
+8. Conclusion
+RoboNova is more than just a robot – it is a learning platform and a demonstration of teamwork, design thinking, and practical engineering.  
+By combining Arduino for control, Raspberry Pi for intelligence, and a carefully managed dual power supply system, we created a robot that is both capable and robust.  
+This architecture positions RoboNova as a strong candidate for the WRO 2025 Future Engineers challenge.
