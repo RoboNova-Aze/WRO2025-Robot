@@ -1,53 +1,52 @@
-# 🤖 RoboNova – WRO 2025 Future Engineers Robot
+RoboNova – WRO 2025 Future Engineers Robot
 
-This repository documents the circuit design and connections of RoboNova, our robot developed for the WRO 2025 Future Engineers category.  
+This repository explains the circuit design and connections of RoboNova, our robot developed for the WRO 2025 Future Engineers category.  
 The system combines embedded control with the Arduino Nano, high-level computing with the Raspberry Pi, and a dual power supply system to achieve reliable and efficient operation.
 
-1. System Overview
+1. Overview
 RoboNova is designed as a four-wheel robot controlled by two DC gear motors and a steering servo.  
 The architecture follows a two-layer control structure:
 
-- The Arduino Nano manages low-level actuation (motors and servo) in real time.  
-- The Raspberry Pi executes high-level tasks such as vision and navigation, using a USB camera.  
+The Arduino Nano manages low-level actuation (motors and servo) in real time.  
+The Raspberry Pi executes high-level tasks such as vision and navigation, using a USB camera.  
 
-This separation ensures smooth interaction between real-time control and complex computations.
+This separation makes smooth interaction between real-time control and complex computations.
 
 2. Power Distribution
 The robot employs two separate power sources for stability.
 
 1. Battery pack (7–12 V):  
-   - Connected to L298N VIN to drive the DC motors.  
-   - Connected to a DC–DC buck converter, stepped down to 5 V, which powers the Arduino Nano and the servo motor.  
+Connected to L298N VIN to drive the DC motors.  
+Connected to a DC–DC buck converter, stepped down to 5 V, which powers the Arduino Nano and the servo motor.  
 
 2. Powerbank (5 V USB):  
-   - Provides direct power to the Raspberry Pi and its connected USB camera.  
+Provides direct power to the Raspberry Pi and its connected USB camera.  
 
-All grounds are connected together to maintain a common reference between controllers and peripherals.
+All grounds are connected together to maintain a common reference between controllers and other components.
 
 3. Motor Driver (L298N)
-The L298N dual H-bridge driver controls the two DC gear motors.
+The L298N motor driver controls the two DC gear motors.
 
-- Motor A (left side): connected to OUT1 and OUT2.  
-- Motor B (right side): connected to OUT3 and OUT4.  
+Motor A (left side): connected to OUT1 and OUT2.  
+Motor B (right side): connected to OUT3 and OUT4.  
 
 Control signals from the Arduino Nano:  
-- ENA connected to pin D3 (PWM) for Motor A speed.  
-- IN1 and IN2 connected to pins D5 and D6 for Motor A direction.  
-- ENB connected to pin D9 (PWM) for Motor B speed.  
-- IN3 and IN4 connected to pins D7 and D8 for Motor B direction.  
+ENA connected to pin D3 (PWM) for Motor A speed.  
+IN1 and IN2 connected to pins D5 and D6 for Motor A direction.  
+ENB connected to pin D9 (PWM) for Motor B speed.  
+IN3 and IN4 connected to pins D7 and D8 for Motor B direction.  
 
-This configuration provides precise control of speed and direction for both motors, enabling forward, backward, and turning movements.
+This configuration provides control of speed and direction for both motors, enabling forward and backward movements.
 
 4. Servo Motor
 The servo motor is controlled directly by the Arduino Nano.  
-The signal pin is connected to D10 (PWM), power comes from the buck converter (5 V), and ground is shared.  
-This allows accurate steering or mechanism positioning.
+The signal pin is connected to D10 (PWM), power comes from the buck converter (5 V), and ground is shared. 
 
 5. Arduino Nano
 The Arduino Nano is powered from the buck converter at 5 V.  
 It generates PWM signals for motors and the servo.  
-It communicates with the Raspberry Pi via USB (serial link).  
-It ensures that actuation remains responsive even while the Pi handles intensive tasks.
+It communicates with the Raspberry Pi by USB.  
+It ensures that connection remains stable even while the Pi handles intensive tasks.
 
 6. Raspberry Pi and Camera
 The Raspberry Pi is powered directly by the powerbank via USB.  
@@ -55,25 +54,25 @@ It hosts the USB camera for vision processing.
 It runs navigation and control algorithms.  
 It sends high-level commands to the Arduino Nano, which translates them into motor and servo actions.
 
-7. Pin Mapping Summary
-- Motor A: OUT1 and OUT2 connected to the left motor.  
-- Motor B: OUT3 and OUT4 connected to the right motor.  
-- ENA to D3 for PWM speed control of Motor A.  
-- IN1 to D5 and IN2 to D6 for Motor A direction.  
-- ENB to D9 for PWM speed control of Motor B.  
-- IN3 to D7 and IN4 to D8 for Motor B direction.  
-- Servo signal connected to D10.  
-- Servo powered from buck converter 5 V with shared ground.  
-- Arduino powered from buck converter 5 V.  
-- Raspberry Pi powered from powerbank 5 V.  
-- All components share a common ground.
+7. Pin Mapping 
+Motor A: OUT1 and OUT2 connected to the left motor.  
+Motor B: OUT3 and OUT4 connected to the right motor.  
+ENA to D3 for PWM speed control of Motor A.  
+IN1 to D5 and IN2 to D6 for Motor A direction.  
+ENB to D9 for PWM speed control of Motor B.  
+IN3 to D7 and IN4 to D8 for Motor B direction.  
+Servo signal connected to D10.  
+Servo powered from buck converter 5 V with shared ground.  
+Arduino powered from buck converter 5 V.  
+Raspberry Pi powered from powerbank 5 V.  
+All components share a common ground.
 
 8. Circuit Diagram
-The full schematic can be found in  
+The full schematic made by us can be found in  
 circuit-diagram/circuit-diagram.png
 
 9. Team RoboNova
-- Nahid Mammadov – software and coding  
-- Ulkar Rahimli – electronics and wiring  
+~~Nahid Mammadov – software and coding  
+~~Ulkar Rahimli – electronics and wiring  
 
 Together, we designed RoboNova to combine robust hardware control with flexible software intelligence for the WRO 2025 competition!
