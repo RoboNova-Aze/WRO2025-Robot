@@ -1,4 +1,4 @@
-👥 Team RoboNova – WRO 2025 Future Engineers
+ Team RoboNova – WRO 2025 Future Engineers
 
 We are Team RoboNova, proudly representing Azerbaijan in the WRO 2025 Future Engineers category. Our team consists of two passionate young engineers, each bringing a unique set of skills and experiences to the project. Together, we combined software development, electronics expertise, and creative problem-solving to design and build an autonomous robot capable of meeting the challenges of this competition.
 
@@ -14,7 +14,7 @@ Creating the communication link between the Pi and the Arduino, ensuring that da
 
 Testing different control strategies so that the robot can adapt to changing conditions during the challenge.
 
-Nahid’s strength lies in his ability to transform competition requirements into working algorithms. He enjoys experimenting with ideas, finding practical solutions, and making the robot “think” and act like an autonomous vehicle.
+Nahid is a 5 th year student from BHOS - Process Automation. 
 
 Ulkar Rahimli – Electronics and Hardware
 
@@ -28,7 +28,7 @@ Ensuring that the motors and servo are wired correctly and that all components s
 
 Testing different hardware setups and making adjustments to achieve the best performance.
 
-Ulkar’s strength is her attention to detail in wiring and hardware integration. Thanks to her work, the robot’s electronic system is robust, clean, and competition-ready.
+Ulkar is a 3 rd year student from BEU-INHA DDP- Electronic Engineering.
 
 Collaboration and Teamwork
 
@@ -38,9 +38,7 @@ Nahid focuses on the “brain” of the robot – the logic, code, and decision-
 
 Ulkar focuses on the “body” of the robot – the wiring, power management, and physical connections.
 
-By working side by side, we ensure that the robot’s brain and body are always aligned. When software requires a new signal, Ulkar adjusts the hardware. When the hardware changes, Nahid adapts the code. This cycle of collaboration has been key to making RoboNova function smoothly.
-
-Vision and Spirit
+By working side by side, we ensure that the robot’s brain and body are always aligned and connected with each other. When software requires a new signal, Ulkar adjusts the hardware. When the hardware changes, Nahid adapts the code. 
 
 Our project is more than just a robot. It represents our team spirit, creativity, and determination. We believe that robotics should be both accessible and innovative. By using simple, affordable components such as Arduino, Raspberry Pi, and common DC motors, we show that high performance can be achieved without expensive equipment.
 
