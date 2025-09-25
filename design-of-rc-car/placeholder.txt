@@ -1,1 +1,1 @@
-This is the 3d-models folder. Add your files here.
+These files shows our journey with building RC Car. The hardest part was servo steering. I completed servo part with the help of my family.
